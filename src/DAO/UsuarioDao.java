@@ -69,7 +69,7 @@ public class UsuarioDao {
             return false;
 
         }catch (SQLException e){
-            JOptionPane.showMessageDialog(null, "Fallo registro usuario, llame a soporte" + e);
+            JOptionPane.showMessageDialog(null, "Fallo registro usuario, llame a soporte");
             System.out.println("Fallo registro usuario, llame a soporte" + e);
             return false;
         }

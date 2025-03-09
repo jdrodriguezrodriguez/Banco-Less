@@ -3,6 +3,7 @@ package UI;
 import Model.UsuarioActivo;
 import UI.Depositos.Consultar;
 import UI.Depositos.Depositar;
+import UI.Depositos.Historial;
 import UI.Depositos.Transferir;
 
 import javax.swing.*;
@@ -62,6 +63,10 @@ public class MenuPrincipal extends JFrame {
 
         btnConsultarSaldo.addActionListener(e ->{
             new Consultar().setVisible(true);
+        });
+
+        btnHistorial.addActionListener(e ->{
+            new Historial().setVisible(true);
         });
     }
 }
