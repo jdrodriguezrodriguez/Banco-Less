@@ -9,7 +9,7 @@ public class Historial extends JFrame {
     private String menu_sesion = Login.menu_user;
     private JPanel panelHistorial;
     private JTable tablaHistorial;
-    private JButton btnActualizar, btnCerrar;
+    private JButton btnCerrar;
 
     public Historial() {
         setTitle("Historial de Traspasos - " + menu_sesion);
@@ -29,7 +29,7 @@ public class Historial extends JFrame {
         panelHistorial.add(titulo);
 
         String[] columnas = {"Fecha", "Cuenta Origen", "Cuenta Destino", "Monto"};
-        Object[][] datos = {}; // Se llenará con datos desde la base de datos
+        Object[][] datos = {};
 
         tablaHistorial = new JTable(datos, columnas);
         JScrollPane scrollPane = new JScrollPane(tablaHistorial);
