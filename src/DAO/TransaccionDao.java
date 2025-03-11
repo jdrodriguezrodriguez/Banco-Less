@@ -79,75 +79,66 @@ public class TransaccionDao {
 
     //TRANFERIR DINERO
     public boolean Transferir(Transaccion transaccion){
-        String sqlTransaccion  = "insert into transaccion (num_cuenta, cuenta_destino, tipo, monto, fecha, descripcion) values (?,?,?,?,?,?)";
-        String sqlRetiroMonto = "update cuenta set saldo = saldo - ? where num_cuenta = ?";
-        String sqlCuentaTransferir  = "update cuenta set saldo = saldo + ? where num_cuenta = ?";
-
-        try(Connection cn = ConexionBD.conectar()) {
-
+        try(Connection cn = ConexionBD.conectar()){
             cn.setAutoCommit(false);
 
-            try(PreparedStatement pstTransaccion = cn.prepareStatement(sqlTransaccion);
-                PreparedStatement pstCuentaDestino = cn.prepareStatement(sqlCuentaTransferir);
-                PreparedStatement pstCuentaEnvio = cn.prepareStatement(sqlRetiroMonto)){
-
-                //RETIRAR DE CUENTA ORIGEN              //ERROR
-                pstCuentaEnvio.setInt(1, transaccion.getMonto());
-                pstCuentaEnvio.setInt(2, transaccion.getNum_cuenta());
-                if (pstCuentaEnvio.executeUpdate() == 0) {
-                    System.out.println("Fallo RETIRAR DE CUENTA ORIGEN");
-                    cn.rollback();
-                    return false;
-                }
-
-                //DEPOSITAR EN CUENTA DESTINO
-                pstCuentaDestino.setInt(1, transaccion.getMonto());
-                pstCuentaDestino.setInt(2, transaccion.getCuentaDestino());
-                if (pstCuentaDestino.executeUpdate() == 0){
-                    System.out.println("Fallo DEPOSITAR EN CUENTA DESTINO");
-                    cn.rollback();
-                    return false;
-                }
-
-                //REGISTRAR HISTORIAL TRANSACCION - ORIGEN
-                pstTransaccion.setInt(1, transaccion.getNum_cuenta());
-                pstTransaccion.setObject(2, transaccion.getCuentaDestino() == 0 ? null : transaccion.getCuentaDestino(), java.sql.Types.INTEGER);
-                pstTransaccion.setString(3, transaccion.getTipo_entrega());
-                pstTransaccion.setInt(4, transaccion.getMonto());
-                pstTransaccion.setString(5, transaccion.getFecha());
-                pstTransaccion.setObject(6, transaccion.getDescripcion() == null ? null : transaccion.getDescripcion(), java.sql.Types.VARCHAR);
-
-                if (pstTransaccion.executeUpdate() == 0) {
-                    System.out.println("Fallo REGISTRAR HISTORIAL TRANSACCION - ORIGEN");
-                    cn.rollback();
-                    return false;
-                }
-
-                // REGISTRAR TRANSACCIÓN - DESTINO
-                pstTransaccion.setInt(1, transaccion.getCuentaDestino());
-                pstTransaccion.setObject(2, transaccion.getNum_cuenta() == 0 ? null : transaccion.getNum_cuenta(), java.sql.Types.INTEGER);
-                pstTransaccion.setString(3, transaccion.getTipo_entrega());
-                pstTransaccion.setInt(4, transaccion.getMonto());
-                pstTransaccion.setString(5, transaccion.getFecha());
-                pstTransaccion.setObject(6, transaccion.getDescripcion() == null ? null : transaccion.getDescripcion(), java.sql.Types.VARCHAR);
-
-                if (pstTransaccion.executeUpdate() == 0) {
-                    System.out.println("fallo REGISTRAR TRANSACCIÓN - DESTINO");
-                    cn.rollback();
-                    return false;
-                }
-
-                cn.commit();
-                return true;
-
-            }catch (SQLException ex){
+            if (!retirarSaldo(cn, transaccion.getNum_cuenta(), transaccion.getMonto())){
                 cn.rollback();
-                System.err.println("Error en la transacción: " + ex.getMessage());
-                JOptionPane.showMessageDialog(null, "Fallo de transacción, llame a soporte.");
+                return false;
             }
+
+            if (!depositarSaldo(cn, transaccion.getCuentaDestino(), transaccion.getMonto())){
+                cn.rollback();
+                return false;
+            }
+
+            if (!registrarTransaccion(cn, transaccion.getNum_cuenta(), transaccion.getCuentaDestino(), "TRANSFERENCIA", transaccion)) {
+                cn.rollback();
+                return false;
+            }
+
+            if (!registrarTransaccion(cn, transaccion.getCuentaDestino(), transaccion.getNum_cuenta(), "TRANSFERENCIA", transaccion)) {
+                cn.rollback();
+                return false;
+            }
+
+            cn.commit();
+            return true;
+
         }catch (SQLException ex){
-            System.err.println("Error de conexión: " + ex.getMessage());
+            System.err.println("Error en la transacción: " + ex.getMessage());
         }
         return false;
+    }
+
+    private boolean retirarSaldo(Connection cn, int numCuenta, int monto) throws SQLException{
+        String sql = "update cuenta set saldo = saldo - ? where num_cuenta = ?";
+        try(PreparedStatement pst = cn.prepareStatement(sql)) {
+            pst.setInt(1, monto);
+            pst.setInt(2, numCuenta);
+            return pst.executeUpdate() > 0;
+        }
+    }
+
+    private boolean depositarSaldo(Connection cn, int numCuenta, int monto) throws SQLException{
+        String sql = "update cuenta set saldo = saldo + ? where num_cuenta = ?";
+        try(PreparedStatement pst = cn.prepareStatement(sql)) {
+            pst.setInt(1, monto);
+            pst.setInt(2, numCuenta);
+            return pst.executeUpdate() > 0;
+        }
+    }
+
+    private boolean registrarTransaccion(Connection cn, int cuentaOrige, int cuentaDestino, String tipo, Transaccion transaccion) throws SQLException{
+        String sql  = "insert into transaccion (num_cuenta, cuenta_destino, tipo, monto, fecha, descripcion) values (?,?,?,?,?,?)";
+        try(PreparedStatement pst = cn.prepareStatement(sql)) {
+            pst.setInt(1, cuentaOrige);
+            pst.setObject(2, cuentaDestino == 0 ? null : cuentaDestino, java.sql.Types.INTEGER);
+            pst.setString(3, tipo);
+            pst.setInt(4, transaccion.getMonto());
+            pst.setString(5, transaccion.getFecha());
+            pst.setObject(6, transaccion.getDescripcion() == null ? null : transaccion.getDescripcion(), java.sql.Types.VARCHAR);
+            return pst.executeUpdate() > 0;
+        }
     }
 }
