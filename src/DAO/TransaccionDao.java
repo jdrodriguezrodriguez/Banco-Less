@@ -87,18 +87,15 @@ public class TransaccionDao {
 
             cn.setAutoCommit(false);
 
-            try(PreparedStatement pstTransaccionEnvio = cn.prepareStatement(sqlTransaccion);
-                PreparedStatement pstTransaccionDestino = cn.prepareStatement(sqlTransaccion);
+            try(PreparedStatement pstTransaccion = cn.prepareStatement(sqlTransaccion);
                 PreparedStatement pstCuentaDestino = cn.prepareStatement(sqlCuentaTransferir);
                 PreparedStatement pstCuentaEnvio = cn.prepareStatement(sqlRetiroMonto)){
 
-                //RETIRAR DE CUENTA ENVIO
+                //RETIRAR DE CUENTA ORIGEN
                 pstCuentaEnvio.setInt(1, transaccion.getMonto());
                 pstCuentaEnvio.setInt(2, transaccion.getNum_cuenta());
-
-                int DineroEnviado = pstCuentaEnvio.executeUpdate();
-
-                if (DineroEnviado == 0) {
+                if (pstCuentaEnvio.executeUpdate() == 0) {
+                    System.out.println("Fallo RETIRAR DE CUENTA ORIGEN");
                     cn.rollback();
                     return false;
                 }
@@ -106,38 +103,36 @@ public class TransaccionDao {
                 //DEPOSITAR EN CUENTA DESTINO
                 pstCuentaDestino.setInt(1, transaccion.getMonto());
                 pstCuentaDestino.setInt(2, transaccion.getCuentaDestino());
-
-                int DineroRecibido = pstCuentaDestino.executeUpdate();
-
-                if (DineroRecibido == 0){
+                if (pstCuentaDestino.executeUpdate() == 0){
+                    System.out.println("Fallo DEPOSITAR EN CUENTA DESTINO");
                     cn.rollback();
                     return false;
                 }
 
-                pstTransaccionEnvio.setInt(1, transaccion.getNum_cuenta());
-                pstTransaccionEnvio.setObject(2, transaccion.getCuentaDestino() == 0 ? null : transaccion.getCuentaDestino(), java.sql.Types.INTEGER);
-                pstTransaccionEnvio.setString(3, transaccion.getTipo_entrega());
-                pstTransaccionEnvio.setInt(4, transaccion.getMonto());
-                pstTransaccionEnvio.setString(5, transaccion.getFecha());
-                pstTransaccionEnvio.setObject(6, transaccion.getDescripcion() == null ? null : transaccion.getDescripcion(), java.sql.Types.VARCHAR);
+                //REGISTRAR HISTORIAL TRANSACCION - ORIGEN
+                pstTransaccion.setInt(1, transaccion.getNum_cuenta());
+                pstTransaccion.setObject(2, transaccion.getCuentaDestino() == 0 ? null : transaccion.getCuentaDestino(), java.sql.Types.INTEGER);
+                pstTransaccion.setString(3, transaccion.getTipo_entrega());
+                pstTransaccion.setInt(4, transaccion.getMonto());
+                pstTransaccion.setString(5, transaccion.getFecha());
+                pstTransaccion.setObject(6, transaccion.getDescripcion() == null ? null : transaccion.getDescripcion(), java.sql.Types.VARCHAR);
 
-                int HistorialEnvio = pstTransaccionEnvio.executeUpdate();
-
-                if (HistorialEnvio == 0) {
+                if (pstTransaccion.executeUpdate() == 0) {
+                    System.out.println("Fallo REGISTRAR HISTORIAL TRANSACCION - ORIGEN");
                     cn.rollback();
                     return false;
                 }
 
-                pstTransaccionDestino.setInt(1, transaccion.getCuentaDestino());
-                pstTransaccionDestino.setObject(2, transaccion.getNum_cuenta() == 0 ? null : transaccion.getNum_cuenta(), java.sql.Types.INTEGER);
-                pstTransaccionDestino.setString(3, transaccion.getTipo_entrega());
-                pstTransaccionDestino.setInt(4, transaccion.getMonto());
-                pstTransaccionDestino.setString(5, transaccion.getFecha());
-                pstTransaccionDestino.setObject(6, transaccion.getDescripcion() == null ? null : transaccion.getDescripcion(), java.sql.Types.VARCHAR);
+                // REGISTRAR TRANSACCIÓN - DESTINO
+                pstTransaccion.setInt(1, transaccion.getCuentaDestino());
+                pstTransaccion.setObject(2, transaccion.getNum_cuenta() == 0 ? null : transaccion.getNum_cuenta(), java.sql.Types.INTEGER);
+                pstTransaccion.setString(3, transaccion.getTipo_entrega());
+                pstTransaccion.setInt(4, transaccion.getMonto());
+                pstTransaccion.setString(5, transaccion.getFecha());
+                pstTransaccion.setObject(6, transaccion.getDescripcion() == null ? null : transaccion.getDescripcion(), java.sql.Types.VARCHAR);
 
-                int HistorialDestino = pstTransaccionDestino.executeUpdate();
-
-                if (HistorialDestino == 0) {
+                if (pstTransaccion.executeUpdate() == 0) {
+                    System.out.println("fallo REGISTRAR TRANSACCIÓN - DESTINO");
                     cn.rollback();
                     return false;
                 }

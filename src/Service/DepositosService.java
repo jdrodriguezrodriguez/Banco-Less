@@ -20,6 +20,18 @@ public class DepositosService {
         UsuarioActivo usuarioActivo = new UsuarioActivo();
         GenerarFechaActual();
 
+        Integer saldo_total = obtenerSaldo();
+
+        /*System.out.println("saldo total: " + saldo_total);
+        System.out.println("Valor a transferir: " + valor);
+        System.out.println("Descripcion: " + Descripcion);
+        System.out.println("Cuenta destino: " + CuentaDestino);*/
+
+        if (saldo_total < valor) {
+            JOptionPane.showMessageDialog(null, "Saldo insuficiente para realizar la transacción.");
+            return false;
+        }
+
         Transaccion transaccion = new Transaccion(0, usuarioActivo.getIdCuenta(), CuentaDestino, valor, "TRANSFERENCIA", Descripcion, GenerarFechaActual() );
 
         if (!transaccionDao.Transferir(transaccion)){

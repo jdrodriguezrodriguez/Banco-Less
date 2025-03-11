@@ -79,12 +79,12 @@ public class Transferir extends JFrame {
         btnTransferir.addActionListener(e -> {
             int CuentaDestino = Integer.parseInt(txtCuentaDestino.getText());
             String Descripcion = txtDescripcion.getText();
-            int Valor = Integer.parseInt(txtMonto.getText());
+            int valor = Integer.parseInt(txtMonto.getText());
 
-            if (DepositosService.CamposTransferencia(Valor, CuentaDestino)){
+            if (DepositosService.CamposTransferencia(valor, CuentaDestino)){
                 DepositosValidatorController controller = new DepositosValidatorController(new DepositosService(new TransaccionDao()));
 
-                boolean validar = controller.TransferirSaldo(Valor, Descripcion, CuentaDestino);
+                boolean validar = controller.TransferirSaldo(valor, Descripcion, CuentaDestino);
 
                 if (validar){
                     dispose();
