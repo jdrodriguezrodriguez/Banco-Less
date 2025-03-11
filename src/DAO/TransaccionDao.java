@@ -91,7 +91,7 @@ public class TransaccionDao {
                 PreparedStatement pstCuentaDestino = cn.prepareStatement(sqlCuentaTransferir);
                 PreparedStatement pstCuentaEnvio = cn.prepareStatement(sqlRetiroMonto)){
 
-                //RETIRAR DE CUENTA ORIGEN
+                //RETIRAR DE CUENTA ORIGEN              //ERROR
                 pstCuentaEnvio.setInt(1, transaccion.getMonto());
                 pstCuentaEnvio.setInt(2, transaccion.getNum_cuenta());
                 if (pstCuentaEnvio.executeUpdate() == 0) {

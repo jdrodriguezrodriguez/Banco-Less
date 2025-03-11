@@ -1,0 +1,35 @@
+[33mcommit 916b3026cd0e9485513f1c7caef23b62aeb5e36d[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m)[m
+Author: jdrodriguez <jdrodriguezr@ut.edu.co>
+Date:   Mon Mar 10 21:03:34 2025 -0500
+
+    Mejorar estructura para transaccion
+
+[33mcommit a648737501e75c8f2367b4542ddabf5ad6d13cbc[m
+Author: jdrodriguez <jdrodriguezr@ut.edu.co>
+Date:   Mon Mar 10 12:45:22 2025 -0500
+
+    Optimizacion transaccionesDeo para depositos
+
+[33mcommit a55d739e0a2e06facfc9456fdd78984decfa8513[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: jdrodriguez <jdrodriguezr@ut.edu.co>
+Date:   Sun Mar 9 16:36:43 2025 -0500
+
+    Crear boton para Historial
+
+[33mcommit dc7269473f6930b13b3dfb39b86e48f7a4289758[m
+Author: jdrodriguez <jdrodriguezr@ut.edu.co>
+Date:   Sun Mar 9 16:33:07 2025 -0500
+
+    Agregar UI/Historial para traspasos
+
+[33mcommit 94c50d57c07eea5deaa05fa291673f8c318f4938[m
+Author: jdrodriguez <jdrodriguezr@ut.edu.co>
+Date:   Sun Mar 9 16:07:36 2025 -0500
+
+    Agregar UI para historial de traspasos
+
+[33mcommit 46475a2db6dc4e039afb74d6e0ceff2d671034b9[m
+Author: jdrodriguez <jdrodriguezr@ut.edu.co>
+Date:   Sun Mar 9 15:58:31 2025 -0500
+
+    Primer commit con base del proyecto

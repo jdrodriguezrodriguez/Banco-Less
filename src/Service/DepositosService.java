@@ -17,17 +17,10 @@ public class DepositosService {
     }
 
     public boolean TransferenciaMonto(int valor, String Descripcion, int CuentaDestino) {
-        UsuarioActivo usuarioActivo = new UsuarioActivo();
+        UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
         GenerarFechaActual();
 
-        Integer saldo_total = obtenerSaldo();
-
-        /*System.out.println("saldo total: " + saldo_total);
-        System.out.println("Valor a transferir: " + valor);
-        System.out.println("Descripcion: " + Descripcion);
-        System.out.println("Cuenta destino: " + CuentaDestino);*/
-
-        if (saldo_total < valor) {
+        if (obtenerSaldo() < valor) {
             JOptionPane.showMessageDialog(null, "Saldo insuficiente para realizar la transacción.");
             return false;
         }
