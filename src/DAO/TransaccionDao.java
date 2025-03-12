@@ -10,48 +10,24 @@ public class TransaccionDao {
 
     //DEPOSITAR DINERO
     public boolean Depositar(Transaccion transaccion) {
-        String sqlTransaccion  = "insert into transaccion (num_cuenta, cuenta_destino, tipo, monto, fecha, descripcion) values (?,?,?,?,?,?)";
-        String sqlActualizarSaldo  = "update cuenta set saldo = saldo + ? where num_cuenta = ?";
-
         try(Connection cn = ConexionBD.conectar()) {
             cn.setAutoCommit(false);
 
-            try(PreparedStatement pstTransaccion = cn.prepareStatement(sqlTransaccion);
-                PreparedStatement pstSaldo = cn.prepareStatement(sqlActualizarSaldo)){
-
-                pstTransaccion.setInt(1, transaccion.getNum_cuenta());
-                pstTransaccion.setObject(2, transaccion.getCuentaDestino() == 0 ? null : transaccion.getCuentaDestino(), java.sql.Types.INTEGER);
-                pstTransaccion.setString(3, transaccion.getTipo_entrega());
-                pstTransaccion.setInt(4, transaccion.getMonto());
-                pstTransaccion.setString(5, transaccion.getFecha());
-                pstTransaccion.setObject(6, transaccion.getDescripcion() == null ? null : transaccion.getDescripcion(), java.sql.Types.VARCHAR);
-
-                int filasAfectadas = pstTransaccion.executeUpdate();
-
-                if (filasAfectadas == 0) {
-                    cn.rollback();
-                    return false;
-                }
-
-                pstSaldo.setInt(1, transaccion.getMonto());
-                pstSaldo.setInt(2, transaccion.getNum_cuenta());
-
-                int saldoActualizado = pstSaldo.executeUpdate();
-
-                if (saldoActualizado == 0) {
-                    cn.rollback(); //RESTABLECER CAMBIOS
-                    return false;
-                }
-
-                cn.commit(); //CONFIRMAR CAMBIOS
-                return true;
-            }catch(SQLException ex){
+            if (!depositarSaldo(cn, transaccion.getNum_cuenta(), transaccion.getMonto())){
                 cn.rollback();
-                System.err.println("Error en el deposito: " + ex.getMessage());
-                JOptionPane.showMessageDialog(null, "Fallo en el deposito, llame a soporte.");
+                return false;
             }
+
+            if (!registrarTransaccion(cn, transaccion.getNum_cuenta(), transaccion.getCuentaDestino(), "TRANSFERENCIA", transaccion)) {
+                cn.rollback();
+                return false;
+            }
+
+            cn.commit();
+            return true;
+
         }catch (SQLException ex){
-            System.err.println("Error de conexión: " + ex.getMessage());
+            System.err.println("Error en el deposito: " + ex.getMessage());
         }
         return false;
     }
