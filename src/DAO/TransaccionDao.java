@@ -1,10 +1,9 @@
 package DAO;
 
 import Model.Transaccion;
-import Model.UsuarioActivo;
-
-import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransaccionDao {
 
@@ -18,7 +17,7 @@ public class TransaccionDao {
                 return false;
             }
 
-            if (!registrarTransaccion(cn, transaccion.getNum_cuenta(), transaccion.getCuentaDestino(), "TRANSFERENCIA", transaccion)) {
+            if (!registrarTransaccion(cn, transaccion.getNum_cuenta(), transaccion.getCuentaDestino(), "DEPOSITO", transaccion)) {
                 cn.rollback();
                 return false;
             }
@@ -85,6 +84,33 @@ public class TransaccionDao {
             System.err.println("Error en la transacción: " + ex.getMessage());
         }
         return false;
+    }
+
+    //HISTORIAL DE TRASPASOS
+    public List<Object[]> ConsultarHistorial(int num_cuenta) {
+        String sql = "select id_transaccion, num_cuenta, cuenta_destino, tipo, monto, fecha, descripcion from transaccion where num_cuenta = ?";
+        List<Object[]> historial = new ArrayList<>();
+
+        try(Connection cn = ConexionBD.conectar();
+        PreparedStatement pst = cn.prepareStatement(sql)){
+
+            pst.setInt(1, num_cuenta);
+
+            try(ResultSet rs = pst.executeQuery()){
+                while (rs.next()){
+
+                    Object[] datos = new Object[7];
+
+                    for (int i = 0; i < 7; i++){
+                        datos[i] = rs.getObject(i + 1);
+                    }
+                    historial.add(datos);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error al mostrar historial: " + ex.getMessage());
+        }
+        return historial;
     }
 
     private boolean retirarSaldo(Connection cn, int numCuenta, int monto) throws SQLException{

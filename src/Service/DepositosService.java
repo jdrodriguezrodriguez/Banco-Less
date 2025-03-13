@@ -7,6 +7,7 @@ import Model.UsuarioActivo;
 import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class DepositosService {
 
@@ -14,6 +15,14 @@ public class DepositosService {
 
     public DepositosService(TransaccionDao transaccionDao) {
         this.transaccionDao = transaccionDao;
+    }
+
+    public List<Object[]> ConsultarHistorial() {
+        UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
+
+        int num_cuenta = usuarioActivo.getIdCuenta();
+
+        return transaccionDao.ConsultarHistorial(num_cuenta);
     }
 
     public boolean TransferenciaMonto(int valor, String Descripcion, int CuentaDestino) {
