@@ -1,5 +1,6 @@
 package UI;
 
+import Model.UsuarioActivo;
 import UI.Depositos.Consultar;
 import UI.Depositos.Depositar;
 import UI.Depositos.Historial;
@@ -82,6 +83,7 @@ public class MenuPrincipal extends JFrame {
 
         btnCerrar.addActionListener(e -> {
             dispose();
+            UsuarioActivo.cerrarSesion();
             new Login().setVisible(true);
         });
     }
