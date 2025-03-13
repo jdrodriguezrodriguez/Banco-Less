@@ -1,11 +1,9 @@
 package UI;
 
-import Model.UsuarioActivo;
 import UI.Depositos.Consultar;
 import UI.Depositos.Depositar;
 import UI.Depositos.Historial;
 import UI.Depositos.Transferir;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,7 +11,7 @@ public class MenuPrincipal extends JFrame {
 
     private String menu_sesion = Login.menu_user;
     private JPanel panelMenu;
-    private JButton btnDepositar, btnTransferir, btnConsultarSaldo, btnHistorial, btnCuenta;
+    private JButton btnDepositar, btnTransferir, btnConsultarSaldo, btnHistorial, btnCuenta, btnCerrar;
 
     public MenuPrincipal() {
 
@@ -28,7 +26,7 @@ public class MenuPrincipal extends JFrame {
         panelMenu.setLayout(null);
 
         JLabel titulo = new JLabel("Menú Principal", SwingConstants.CENTER);
-        titulo.setFont(new Font("Arial", Font.BOLD, 24));
+        titulo.setFont(new Font("Arial", Font.BOLD, 40));
         titulo.setForeground(Color.WHITE);
         titulo.setBounds(200, 30, 300, 40);
         panelMenu.add(titulo);
@@ -40,16 +38,28 @@ public class MenuPrincipal extends JFrame {
         btnCuenta = new JButton("Cuenta");
 
         JButton[] botones = {btnDepositar, btnTransferir, btnConsultarSaldo, btnHistorial, btnCuenta};
-        int yPosition = 100;
+        int yPosition = 130;
 
         for (JButton boton : botones) {
             boton.setBounds(250, yPosition, 200, 50);
             boton.setBackground(new Color(246, 190, 0));
             boton.setForeground(new Color(12, 25, 34));
             boton.setFont(new Font("Arial", Font.BOLD, 16));
+            boton.setFocusPainted(false);
+            boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             panelMenu.add(boton);
             yPosition += 70;
         }
+
+        btnCerrar = new JButton("Cerrar sesión");
+        btnCerrar.setBounds(560, 30, 110, 20);
+        btnCerrar.setBackground(new Color(135, 8, 25));
+        btnCerrar.setForeground(Color.WHITE);
+        btnCerrar.setFont(new Font("Arial", Font.BOLD, 10));
+        btnCerrar.setFocusPainted(false);
+        btnCerrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnCerrar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        panelMenu.add(btnCerrar);
 
         setContentPane(panelMenu);
 
@@ -67,6 +77,11 @@ public class MenuPrincipal extends JFrame {
 
         btnHistorial.addActionListener(e ->{
             new Historial().setVisible(true);
+        });
+
+        btnCerrar.addActionListener(e -> {
+            dispose();
+            new Login().setVisible(true);
         });
     }
 }
