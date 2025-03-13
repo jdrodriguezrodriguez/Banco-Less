@@ -11,7 +11,7 @@ public class DepositosValidatorController {
     }
 
     public boolean Depositar(int valor, String Descripcion) {
-        return depositosService.Depositar(valor, Descripcion);
+        return depositosService.DepositarMonto(valor, Descripcion);
     }
 
     public Integer consultarSaldo() {

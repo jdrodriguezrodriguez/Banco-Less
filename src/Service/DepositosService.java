@@ -26,20 +26,18 @@ public class DepositosService {
         }
 
         Transaccion transaccion = new Transaccion(0, usuarioActivo.getIdCuenta(), CuentaDestino, valor, "TRANSFERENCIA", Descripcion, GenerarFechaActual() );
-
         if (!transaccionDao.Transferir(transaccion)){
             return false;
         }
         return true;
     }
 
-    public boolean Depositar(int valor, String Descripcion) {
+    public boolean DepositarMonto(int valor, String Descripcion) {
 
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
         GenerarFechaActual();
 
         Transaccion transaccion = new Transaccion(0, usuarioActivo.getIdCuenta(), 0, valor, "DEPOSITO", Descripcion, GenerarFechaActual() );
-
 
         if (!transaccionDao.Depositar(transaccion)){
             return false;
@@ -51,7 +49,6 @@ public class DepositosService {
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
 
         int num_cuenta = usuarioActivo.getIdCuenta();
-
         Integer saldo = transaccionDao.ConsultarSaldo(num_cuenta);
 
         if(saldo == 0){
