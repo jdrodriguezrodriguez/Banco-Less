@@ -11,15 +11,16 @@ import java.util.List;
 
 public class DepositosService {
 
+    private String fechaActual;
     private TransaccionDao transaccionDao;
 
     public DepositosService(TransaccionDao transaccionDao) {
+        this.fechaActual = GenerarFechaActual();
         this.transaccionDao = transaccionDao;
     }
 
     public List<Object[]> ConsultarHistorial() {
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
-
         int num_cuenta = usuarioActivo.getIdCuenta();
 
         return transaccionDao.ConsultarHistorial(num_cuenta);
@@ -27,14 +28,13 @@ public class DepositosService {
 
     public boolean TransferenciaMonto(int valor, String Descripcion, int CuentaDestino) {
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
-        GenerarFechaActual();
 
         if (obtenerSaldo() < valor) {
             JOptionPane.showMessageDialog(null, "Saldo insuficiente para realizar la transacción.");
             return false;
         }
 
-        Transaccion transaccion = new Transaccion(0, usuarioActivo.getIdCuenta(), CuentaDestino, valor, "TRANSFERENCIA", Descripcion, GenerarFechaActual() );
+        Transaccion transaccion = new Transaccion(0, usuarioActivo.getIdCuenta(), CuentaDestino, valor, "TRANSFERENCIA", Descripcion, fechaActual);
         if (!transaccionDao.Transferir(transaccion)){
             return false;
         }
@@ -44,9 +44,8 @@ public class DepositosService {
     public boolean DepositarMonto(int valor, String Descripcion) {
 
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
-        GenerarFechaActual();
 
-        Transaccion transaccion = new Transaccion(0, usuarioActivo.getIdCuenta(), 0, valor, "DEPOSITO", Descripcion, GenerarFechaActual() );
+        Transaccion transaccion = new Transaccion(0, usuarioActivo.getIdCuenta(), 0, valor, "DEPOSITO", Descripcion, fechaActual);
 
         if (!transaccionDao.Depositar(transaccion)){
             return false;
