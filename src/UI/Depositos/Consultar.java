@@ -11,13 +11,13 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class Consultar extends JFrame {
-    private String menu_sesion = Login.menu_user;
     private JPanel panelSaldo;
     private JLabel lblSaldo;
-    private JButton btnActualizar, btnCerrar;
+    private JButton btnCerrar;
 
     public Consultar() {
-        setTitle("Consultar Saldo - " + menu_sesion);
+
+        setTitle("Consultar Saldo - " + Login.menu_user);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null);
@@ -46,9 +46,7 @@ public class Consultar extends JFrame {
 
         add(panelSaldo);
 
-
         DepositosValidatorController controller = new DepositosValidatorController(new DepositosService (new TransaccionDao()));
-
         Integer Saldo = controller.consultarSaldo();
 
         NumberFormat formato = NumberFormat.getNumberInstance(Locale.US);
@@ -59,8 +57,6 @@ public class Consultar extends JFrame {
         }else {
             lblSaldo.setText("Contacte al banco");
         }
-
-
 
         btnCerrar.addActionListener(e ->{
             dispose();

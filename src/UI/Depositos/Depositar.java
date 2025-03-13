@@ -8,13 +8,13 @@ import java.awt.*;
 
 public class Depositar extends JFrame {
 
-    private String menu_sesion = Login.menu_user;
     private JPanel panelDeposito;
     private JTextField txtMonto, txtDescripcion;
     private JButton btnDepositar, btnCancelar;
 
     public Depositar() {
-        setTitle("Depositar " + menu_sesion);
+
+        setTitle("Depositar " + Login.menu_user);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 400);
         setLocationRelativeTo(null);
@@ -72,8 +72,8 @@ public class Depositar extends JFrame {
             if (DepositosService.CamposDeposito(valor)){
 
                 DepositosValidatorController controller = new DepositosValidatorController(new DepositosService(new TransaccionDao()));
-
                 boolean DepositoExitoso = controller.Depositar(valor, Descripcion);
+
                 if (DepositoExitoso){
                     dispose();
                     JOptionPane.showMessageDialog(null, "DEPOSITO EXITOSO");

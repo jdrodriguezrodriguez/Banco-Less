@@ -9,13 +9,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Transferir extends JFrame {
-    private String menu_sesion = Login.menu_user;
+
     private JPanel panelTransferencia;
     private JTextField txtCuentaDestino, txtMonto, txtDescripcion;
     private JButton btnTransferir, btnCancelar;
 
     public Transferir() {
-        setTitle("Transferir " + menu_sesion);
+        setTitle("Transferir " + Login.menu_user);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 450);
         setLocationRelativeTo(null);
@@ -82,8 +82,8 @@ public class Transferir extends JFrame {
             int valor = Integer.parseInt(txtMonto.getText());
 
             if (DepositosService.CamposTransferencia(valor, CuentaDestino)){
-                DepositosValidatorController controller = new DepositosValidatorController(new DepositosService(new TransaccionDao()));
 
+                DepositosValidatorController controller = new DepositosValidatorController(new DepositosService(new TransaccionDao()));
                 boolean validar = controller.TransferirSaldo(valor, Descripcion, CuentaDestino);
 
                 if (validar){

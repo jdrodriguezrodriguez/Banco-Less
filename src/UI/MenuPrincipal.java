@@ -9,13 +9,14 @@ import java.awt.*;
 
 public class MenuPrincipal extends JFrame {
 
-    private String menu_sesion = Login.menu_user;
     private JPanel panelMenu;
     private JButton btnDepositar, btnTransferir, btnConsultarSaldo, btnHistorial, btnCuenta, btnCerrar;
 
     public MenuPrincipal() {
-
-        setTitle("Banco Menú Principal - " + menu_sesion);
+        setTitle("Banco Menú Principal");
+        SwingUtilities.invokeLater(() -> {
+            setTitle("Banco Menú Principal - " + Login.menu_user);
+        });
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(720, 600);
         setLocationRelativeTo(null);

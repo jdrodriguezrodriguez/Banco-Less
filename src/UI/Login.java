@@ -20,12 +20,12 @@ public class Login extends JFrame {
     private JButton btnLogin, btnRegistrar;
 
     public Login() {
+
         setTitle("Login - Banco Less");
         setSize(650, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-
 
         panelLogin = new JPanel();
         panelLogin.setLayout(null);
@@ -93,7 +93,6 @@ public class Login extends JFrame {
         btnRegistrar.setBorder(BorderFactory.createLineBorder(new Color(80, 2, 2), 2));
         btnRegistrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-
         panelLogin.add(label_titulo);
         panelLogin.add(label_usuario);
         panelLogin.add(txtUsuario);
@@ -106,7 +105,6 @@ public class Login extends JFrame {
         setContentPane(panelLogin);
         setVisible(true);
 
-
         btnLogin.addActionListener(e -> {
 
             String username = txtUsuario.getText().trim();
@@ -115,7 +113,6 @@ public class Login extends JFrame {
             if (UsuariosService.ValidarCaposLogin(username, password)){
 
                 FormValidatorController controller = new FormValidatorController(new UsuariosService(new PersonaDao(), new UsuarioDao(), new CuentaDao()));
-
                 boolean LoginExitoso = controller.LoginUsuario(username, password);
 
                 if (LoginExitoso){
@@ -124,13 +121,10 @@ public class Login extends JFrame {
                 }else{
                     txtPassword.setText("");
                     txtUsuario.setText("");
-
                     label_alerta.setText("Datos incorrectos");
-
                     txtUsuario.setBackground(Color.RED);
                     txtPassword.setBackground(Color.RED);
                 }
-
             }else {
                 label_alerta.setText("Campos vacios");
                 txtUsuario.setBackground(Color.RED);

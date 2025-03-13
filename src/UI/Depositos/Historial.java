@@ -10,14 +10,14 @@ import java.awt.*;
 import java.util.List;
 
 public class Historial extends JFrame {
-    private String menu_sesion = Login.menu_user;
+
     private JPanel panelHistorial;
     private JTable tablaHistorial;
     private JButton btnCerrar;
     DefaultTableModel modeloHistorial = new DefaultTableModel(); //TABLE ADD/ROW
 
     public Historial() {
-        setTitle("Historial de Traspasos - " + menu_sesion);
+        setTitle("Historial de Traspasos - " + Login.menu_user);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1000, 400);
         setLocationRelativeTo(null);
@@ -46,7 +46,6 @@ public class Historial extends JFrame {
 
         add(panelHistorial);
 
-
         //MOSTRAR HISTORIAL
         modeloHistorial.addColumn("");
         modeloHistorial.addColumn("Cuenta");
@@ -66,7 +65,6 @@ public class Historial extends JFrame {
         }else{
             JOptionPane.showMessageDialog(null, "No hay datos en el historial.");
         }
-
 
         btnCerrar.addActionListener(e ->{
             dispose();
