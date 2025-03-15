@@ -11,12 +11,13 @@ import java.awt.*;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 public class Historial extends JFrame {
 
     private JPanel panelHistorial;
     private JTable tablaHistorial;
-    private JButton btnCerrar;
+    private JButton btnCerrar, btnDepositos, btnTransferencias;
     DefaultTableModel modeloHistorial = new DefaultTableModel(); //TABLE ADD/ROW
 
     public Historial() {
@@ -42,10 +43,20 @@ public class Historial extends JFrame {
         scrollPane.setBorder(null);
         panelHistorial.add(scrollPane);
 
-        btnCerrar = new JButton("Cerrar");
+        btnCerrar = new JButton("Depositos");
         btnCerrar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnCerrar.setBounds(130, 180, 130, 40);
+        btnCerrar.setBounds(200, 290, 130, 40);
         panelHistorial.add(btnCerrar);
+
+        btnTransferencias = new JButton("Transferencias");
+        btnTransferencias.setFont(new Font("Arial", Font.BOLD, 16));
+        btnTransferencias.setBounds(425, 290, 150, 40);
+        panelHistorial.add(btnTransferencias);
+
+        btnDepositos = new JButton("Cerrar");
+        btnDepositos.setFont(new Font("Arial", Font.BOLD, 16));
+        btnDepositos.setBounds(650, 290, 130, 40);
+        panelHistorial.add(btnDepositos);
 
         add(panelHistorial);
 
@@ -78,6 +89,31 @@ public class Historial extends JFrame {
                 });
             });
         }
+
+        btnDepositos.addActionListener(e ->{
+            modeloHistorial.setRowCount(0);
+
+            if (historial != null) {
+                Stream<Transaccion> Datos = historial.stream().filter(transaccion -> transaccion.getTipo_entrega().equals("TRANSFERENCIA"));
+
+                Datos.forEach(transaccion -> {
+                    modeloHistorial.addRow(new Object[]{
+                            transaccion.getIdTransaccion(),
+                            transaccion.getNum_cuenta(),
+                            transaccion.getCuentaDestino(),
+                            transaccion.getTipo_entrega(),
+                            formato.format(transaccion.getMonto()),
+                            transaccion.getFecha(),
+                            transaccion.getDescripcion()
+                    });
+                });
+
+            }
+        });
+
+        btnTransferencias.addActionListener(e ->{
+
+        });
 
         btnCerrar.addActionListener(e ->{
             dispose();
