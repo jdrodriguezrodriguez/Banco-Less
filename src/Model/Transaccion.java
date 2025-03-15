@@ -1,15 +1,9 @@
 package Model;
 
-import java.util.Date;
-
 public class Transaccion {
 
     private int idTransaccion, num_cuenta, cuentaDestino, monto;
-    private String tipo_entrega, descripcion;
-    private String fecha;
-
-    public Transaccion(){
-    }
+    private String tipo_entrega, descripcion, fecha;
 
     public Transaccion(int idTransaccion, int num_cuenta, int cuentaDestino, int monto, String tipo_entrega, String descripcion, String fecha) {
         this.idTransaccion = idTransaccion;
@@ -19,6 +13,9 @@ public class Transaccion {
         this.tipo_entrega = tipo_entrega;
         this.descripcion = descripcion;
         this.fecha = fecha;
+    }
+
+    public Transaccion() {
     }
 
     public int getIdTransaccion() {

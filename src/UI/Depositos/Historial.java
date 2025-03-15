@@ -2,12 +2,15 @@ package UI.Depositos;
 
 import Controller.DepositosValidatorController;
 import DAO.TransaccionDao;
+import Model.Transaccion;
 import Service.DepositosService;
 import UI.Login;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class Historial extends JFrame {
 
@@ -56,14 +59,25 @@ public class Historial extends JFrame {
         modeloHistorial.addColumn("Descripcion");
 
         DepositosValidatorController controller = new DepositosValidatorController(new DepositosService(new TransaccionDao()));
-        List<Object[]> historial = controller.ConsultarHistorial();
 
-        if (historial != null && !historial.isEmpty()) {
-            for (Object[] row : historial) {
-                modeloHistorial.addRow(row);
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "No hay datos en el historial.");
+        List<Transaccion> historial = controller.ConsultarHistorial();
+        NumberFormat formato = NumberFormat.getNumberInstance(Locale.US);
+        String MontoFormato;
+
+        modeloHistorial.setRowCount(0);
+
+        if (historial != null) {
+            historial.forEach(transaccion -> {
+                modeloHistorial.addRow(new Object[]{
+                        transaccion.getIdTransaccion(),
+                        transaccion.getNum_cuenta(),
+                        transaccion.getCuentaDestino(),
+                        transaccion.getTipo_entrega(),
+                        formato.format(transaccion.getMonto()),
+                        transaccion.getFecha(),
+                        transaccion.getDescripcion(),
+                });
+            });
         }
 
         btnCerrar.addActionListener(e ->{

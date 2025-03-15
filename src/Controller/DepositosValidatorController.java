@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Transaccion;
 import Service.DepositosService;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class DepositosValidatorController {
         return depositosService.TransferenciaMonto(valor, Descripcion, CuentaDestino);
     }
 
-    public List<Object[]> ConsultarHistorial() {
+    public List<Transaccion> ConsultarHistorial() {
         return depositosService.ConsultarHistorial();
     }
 

@@ -87,9 +87,9 @@ public class TransaccionDao {
     }
 
     //HISTORIAL DE TRASPASOS
-    public List<Object[]> ConsultarHistorial(int num_cuenta) {
+    public List<Transaccion> ConsultarHistorial(int num_cuenta) {
         String sql = "select id_transaccion, num_cuenta, cuenta_destino, tipo, monto, fecha, descripcion from transaccion where num_cuenta = ?";
-        List<Object[]> historial = new ArrayList<>();
+        List<Transaccion> historial = new ArrayList<>();
 
         try(Connection cn = ConexionBD.conectar();
         PreparedStatement pst = cn.prepareStatement(sql)){
@@ -97,14 +97,16 @@ public class TransaccionDao {
             pst.setInt(1, num_cuenta);
 
             try(ResultSet rs = pst.executeQuery()){
-                while (rs.next()){
 
-                    Object[] datos = new Object[7];
+                while(rs.next()){
+                    int id_transaccion = rs.getInt("id_transaccion");
+                    int cuenta_destino = rs.getInt("cuenta_destino");
+                    String tipo = rs.getString("tipo");
+                    int monto = rs.getInt("monto");
+                    String fecha = rs.getString("fecha");
+                    String descripcion = rs.getString("descripcion");
 
-                    for (int i = 0; i < 7; i++){
-                        datos[i] = rs.getObject(i + 1);
-                    }
-                    historial.add(datos);
+                    historial.add(new Transaccion(id_transaccion, num_cuenta, cuenta_destino, monto, tipo, fecha, descripcion));
                 }
             }
         } catch (SQLException ex) {
