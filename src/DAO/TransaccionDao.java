@@ -12,12 +12,12 @@ public class TransaccionDao {
         try(Connection cn = ConexionBD.conectar()) {
             cn.setAutoCommit(false);
 
-            if (!depositarSaldo(cn, transaccion.getNum_cuenta(), transaccion.getMonto())){
+            if (!DepositarSaldo(cn, transaccion.getNum_cuenta(), transaccion.getMonto())){
                 cn.rollback();
                 return false;
             }
 
-            if (!registrarTransaccion(cn, transaccion.getNum_cuenta(), transaccion.getCuentaDestino(), "DEPOSITO", transaccion)) {
+            if (!RegistrarTransaccion(cn, transaccion.getNum_cuenta(), transaccion.getCuentaDestino(), "DEPOSITO", transaccion)) {
                 cn.rollback();
                 return false;
             }
@@ -57,22 +57,22 @@ public class TransaccionDao {
         try(Connection cn = ConexionBD.conectar()){
             cn.setAutoCommit(false);
 
-            if (!retirarSaldo(cn, transaccion.getNum_cuenta(), transaccion.getMonto())){
+            if (!RetirarSaldo(cn, transaccion.getNum_cuenta(), transaccion.getMonto())){
                 cn.rollback();
                 return false;
             }
 
-            if (!depositarSaldo(cn, transaccion.getCuentaDestino(), transaccion.getMonto())){
+            if (!DepositarSaldo(cn, transaccion.getCuentaDestino(), transaccion.getMonto())){
                 cn.rollback();
                 return false;
             }
 
-            if (!registrarTransaccion(cn, transaccion.getNum_cuenta(), transaccion.getCuentaDestino(), "TRANSFERENCIA", transaccion)) {
+            if (!RegistrarTransaccion(cn, transaccion.getNum_cuenta(), transaccion.getCuentaDestino(), "TRANSFERENCIA", transaccion)) {
                 cn.rollback();
                 return false;
             }
 
-            if (!registrarTransaccion(cn, transaccion.getCuentaDestino(), transaccion.getNum_cuenta(), "TRANSFERENCIA", transaccion)) {
+            if (!RegistrarTransaccion(cn, transaccion.getCuentaDestino(), transaccion.getNum_cuenta(), "TRANSFERENCIA", transaccion)) {
                 cn.rollback();
                 return false;
             }
@@ -106,7 +106,7 @@ public class TransaccionDao {
                     String fecha = rs.getString("fecha");
                     String descripcion = rs.getString("descripcion");
 
-                    historial.add(new Transaccion(id_transaccion, num_cuenta, cuenta_destino, monto, tipo, fecha, descripcion));
+                    historial.add(new Transaccion(id_transaccion, num_cuenta, cuenta_destino, monto, tipo, descripcion, fecha));
                 }
             }
         } catch (SQLException ex) {
@@ -115,7 +115,7 @@ public class TransaccionDao {
         return historial;
     }
 
-    private boolean retirarSaldo(Connection cn, int numCuenta, int monto) throws SQLException{
+    private boolean RetirarSaldo(Connection cn, int numCuenta, int monto) throws SQLException{
         String sql = "update cuenta set saldo = saldo - ? where num_cuenta = ?";
         try(PreparedStatement pst = cn.prepareStatement(sql)) {
             pst.setInt(1, monto);
@@ -124,7 +124,7 @@ public class TransaccionDao {
         }
     }
 
-    private boolean depositarSaldo(Connection cn, int numCuenta, int monto) throws SQLException{
+    private boolean DepositarSaldo(Connection cn, int numCuenta, int monto) throws SQLException{
         String sql = "update cuenta set saldo = saldo + ? where num_cuenta = ?";
         try(PreparedStatement pst = cn.prepareStatement(sql)) {
             pst.setInt(1, monto);
@@ -133,7 +133,7 @@ public class TransaccionDao {
         }
     }
 
-    private boolean registrarTransaccion(Connection cn, int cuentaOrige, int cuentaDestino, String tipo, Transaccion transaccion) throws SQLException{
+    private boolean RegistrarTransaccion(Connection cn, int cuentaOrige, int cuentaDestino, String tipo, Transaccion transaccion) throws SQLException{
         String sql  = "insert into transaccion (num_cuenta, cuenta_destino, tipo, monto, fecha, descripcion) values (?,?,?,?,?,?)";
         try(PreparedStatement pst = cn.prepareStatement(sql)) {
             pst.setInt(1, cuentaOrige);

@@ -81,7 +81,7 @@ public class Transferir extends JFrame {
             String Descripcion = txtDescripcion.getText();
             int valor = Integer.parseInt(txtMonto.getText());
 
-            if (DepositosService.CamposTransferencia(valor, CuentaDestino)){
+            if (DepositosService.VerificarCamposTransferencia(valor, CuentaDestino)){
 
                 DepositosValidatorController controller = new DepositosValidatorController(new DepositosService(new TransaccionDao()));
                 boolean validar = controller.TransferirSaldo(valor, Descripcion, CuentaDestino);

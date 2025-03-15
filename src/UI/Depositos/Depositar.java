@@ -69,7 +69,7 @@ public class Depositar extends JFrame {
             int valor = Integer.parseInt(txtMonto.getText());
             String Descripcion = txtDescripcion.getText();
 
-            if (DepositosService.CamposDeposito(valor)){
+            if (DepositosService.VerificarCamposDeposito(valor)){
 
                 DepositosValidatorController controller = new DepositosValidatorController(new DepositosService(new TransaccionDao()));
                 boolean DepositoExitoso = controller.Depositar(valor, Descripcion);

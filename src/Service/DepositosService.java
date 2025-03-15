@@ -6,7 +6,6 @@ import Model.UsuarioActivo;
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +19,7 @@ public class DepositosService {
         this.transaccionDao = transaccionDao;
     }
 
+    //CONSULTAR HISTORIAL
     public List<Transaccion> ConsultarHistorial() {
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
         int num_cuenta = usuarioActivo.getIdCuenta();
@@ -27,10 +27,11 @@ public class DepositosService {
         return transaccionDao.ConsultarHistorial(num_cuenta);
     }
 
+    //TRANSFERIR SALDO
     public boolean TransferenciaMonto(int valor, String Descripcion, int CuentaDestino) {
-        UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
 
-        if (obtenerSaldo() < valor) {
+        UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
+        if (ConsultarSaldo() < valor) {
             JOptionPane.showMessageDialog(null, "Saldo insuficiente para realizar la transacción.");
             return false;
         }
@@ -42,7 +43,8 @@ public class DepositosService {
         return true;
     }
 
-    public boolean DepositarMonto(int valor, String Descripcion) {
+    //DEPOSITAR SALDO
+    public boolean DepositarSaldo(int valor, String Descripcion) {
 
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
         Transaccion transaccion = new Transaccion(0, usuarioActivo.getIdCuenta(), 0, valor, "DEPOSITO", Descripcion, fechaActual);
@@ -53,7 +55,8 @@ public class DepositosService {
         return true;
     }
 
-    public Integer obtenerSaldo(){
+    //CONSULTAR SALDO
+    public Integer ConsultarSaldo(){
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
 
         int num_cuenta = usuarioActivo.getIdCuenta();
@@ -65,11 +68,13 @@ public class DepositosService {
         return saldo;
     }
 
-    public static boolean CamposDeposito(int valor){
+    //VERIFICAR CAMPOS UI DEPOSITO
+    public static boolean VerificarCamposDeposito(int valor){
         return valor > 0;
     }
 
-    public static boolean CamposTransferencia(int valor, int CuentaDestino){
+    //VERIFICAR CAMPOS UI TRANSFERENCIA
+    public static boolean VerificarCamposTransferencia(int valor, int CuentaDestino){
         if (String.valueOf(CuentaDestino).length() == 10){
             if (valor > 0){
                 return true;
@@ -83,12 +88,11 @@ public class DepositosService {
         }
     }
 
+    //GENERAR FECHA ACTUAL
     public static String GenerarFechaActual(){
         Date current = new Date();
-
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String FechaActual = formatter.format(current);
-
         return FechaActual;
     }
 

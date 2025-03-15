@@ -14,11 +14,11 @@ public class DepositosValidatorController {
     }
 
     public boolean Depositar(int valor, String Descripcion) {
-        return depositosService.DepositarMonto(valor, Descripcion);
+        return depositosService.DepositarSaldo(valor, Descripcion);
     }
 
     public Integer consultarSaldo() {
-        return depositosService.obtenerSaldo();
+        return depositosService.ConsultarSaldo();
     }
 
     public boolean TransferirSaldo(int valor, String Descripcion, int CuentaDestino) {

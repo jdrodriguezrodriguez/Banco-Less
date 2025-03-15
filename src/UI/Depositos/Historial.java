@@ -62,7 +62,6 @@ public class Historial extends JFrame {
 
         List<Transaccion> historial = controller.ConsultarHistorial();
         NumberFormat formato = NumberFormat.getNumberInstance(Locale.US);
-        String MontoFormato;
 
         modeloHistorial.setRowCount(0);
 
@@ -75,7 +74,7 @@ public class Historial extends JFrame {
                         transaccion.getTipo_entrega(),
                         formato.format(transaccion.getMonto()),
                         transaccion.getFecha(),
-                        transaccion.getDescripcion(),
+                        transaccion.getDescripcion()
                 });
             });
         }
