@@ -17,7 +17,7 @@ public class Historial extends JFrame {
 
     private JPanel panelHistorial;
     private JTable tablaHistorial;
-    private JButton btnCerrar, btnDepositos, btnTransferencias;
+    private JButton btnCerrar, btnDepositos, btnTransferencias, btnTotal;
     DefaultTableModel modeloHistorial = new DefaultTableModel(); //TABLE ADD/ROW
 
     public Historial() {
@@ -43,20 +43,25 @@ public class Historial extends JFrame {
         scrollPane.setBorder(null);
         panelHistorial.add(scrollPane);
 
-        btnCerrar = new JButton("Depositos");
-        btnCerrar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnCerrar.setBounds(200, 290, 130, 40);
-        panelHistorial.add(btnCerrar);
+        btnTotal = new JButton("Mostrar todo");
+        btnTotal.setFont(new Font("Arial", Font.BOLD, 16));
+        btnTotal.setBounds(155, 290, 150, 40);
+        panelHistorial.add(btnTotal);
+
+        btnDepositos = new JButton("Depositos");
+        btnDepositos.setFont(new Font("Arial", Font.BOLD, 16));
+        btnDepositos.setBounds(335, 290, 130, 40);
+        panelHistorial.add(btnDepositos);
 
         btnTransferencias = new JButton("Transferencias");
         btnTransferencias.setFont(new Font("Arial", Font.BOLD, 16));
-        btnTransferencias.setBounds(425, 290, 150, 40);
+        btnTransferencias.setBounds(515, 290, 150, 40);
         panelHistorial.add(btnTransferencias);
 
-        btnDepositos = new JButton("Cerrar");
-        btnDepositos.setFont(new Font("Arial", Font.BOLD, 16));
-        btnDepositos.setBounds(650, 290, 130, 40);
-        panelHistorial.add(btnDepositos);
+        btnCerrar = new JButton("Cerrar");
+        btnCerrar.setFont(new Font("Arial", Font.BOLD, 16));
+        btnCerrar.setBounds(695, 290, 130, 40);
+        panelHistorial.add(btnCerrar);
 
         add(panelHistorial);
 
@@ -74,23 +79,32 @@ public class Historial extends JFrame {
         List<Transaccion> historial = controller.ConsultarHistorial();
         NumberFormat formato = NumberFormat.getNumberInstance(Locale.US);
 
-        modeloHistorial.setRowCount(0);
+        MostrarHistorial(historial, formato);
 
-        if (historial != null) {
-            historial.forEach(transaccion -> {
-                modeloHistorial.addRow(new Object[]{
-                        transaccion.getIdTransaccion(),
-                        transaccion.getNum_cuenta(),
-                        transaccion.getCuentaDestino(),
-                        transaccion.getTipo_entrega(),
-                        formato.format(transaccion.getMonto()),
-                        transaccion.getFecha(),
-                        transaccion.getDescripcion()
-                });
-            });
-        }
-
+        //MOSTRAR DEPOSITOS
         btnDepositos.addActionListener(e ->{
+            modeloHistorial.setRowCount(0);
+
+            if (historial != null) {
+                Stream<Transaccion> Datos = historial.stream().filter(transaccion -> transaccion.getTipo_entrega().equals("DEPOSITO"));
+
+                Datos.forEach(transaccion -> {
+                    modeloHistorial.addRow(new Object[]{
+                            transaccion.getIdTransaccion(),
+                            transaccion.getNum_cuenta(),
+                            transaccion.getCuentaDestino(),
+                            transaccion.getTipo_entrega(),
+                            formato.format(transaccion.getMonto()),
+                            transaccion.getFecha(),
+                            transaccion.getDescripcion()
+                    });
+                });
+
+            }
+        });
+
+        //MOSTRAR TRANSFERENCIAS
+        btnTransferencias.addActionListener(e ->{
             modeloHistorial.setRowCount(0);
 
             if (historial != null) {
@@ -111,12 +125,33 @@ public class Historial extends JFrame {
             }
         });
 
-        btnTransferencias.addActionListener(e ->{
-
+        //MOSTRAR HISTORIAL COMPLETO
+        btnTotal.addActionListener(e ->{
+            MostrarHistorial(historial, formato);
         });
 
         btnCerrar.addActionListener(e ->{
             dispose();
         });
+    }
+
+    private boolean MostrarHistorial(List<Transaccion> historial, NumberFormat formato) {
+        modeloHistorial.setRowCount(0);
+
+        if (historial != null) {
+            historial.forEach(transaccion -> {
+                modeloHistorial.addRow(new Object[]{
+                        transaccion.getIdTransaccion(),
+                        transaccion.getNum_cuenta(),
+                        transaccion.getCuentaDestino(),
+                        transaccion.getTipo_entrega(),
+                        formato.format(transaccion.getMonto()),
+                        transaccion.getFecha(),
+                        transaccion.getDescripcion()
+                });
+            });
+            return true;
+        }
+        return false;
     }
 }
