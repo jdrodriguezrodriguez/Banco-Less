@@ -31,6 +31,12 @@ public class DepositosService {
     public boolean TransferenciaMonto(int valor, String Descripcion, int CuentaDestino) {
 
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
+
+        if (!transaccionDao.ConsultarCuenta(CuentaDestino)){
+            JOptionPane.showMessageDialog(null, "La cuenta no existe.");
+            return false;
+        }
+
         if (ConsultarSaldo() < valor) {
             JOptionPane.showMessageDialog(null, "Saldo insuficiente para realizar la transacción.");
             return false;

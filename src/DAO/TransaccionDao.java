@@ -86,6 +86,26 @@ public class TransaccionDao {
         return false;
     }
 
+    //CONSULTAR CUENTA TRASPASO
+    public boolean ConsultarCuenta(int cuenta_destino) {
+        String sql = "select num_cuenta from cuenta where num_cuenta = ?";
+
+        try(Connection cn = ConexionBD.conectar();
+        PreparedStatement pst = cn.prepareStatement(sql)){
+
+            pst.setInt(1, cuenta_destino);
+
+            try(ResultSet rs = pst.executeQuery()){
+                if (rs.next()){
+                    return true;
+                }
+            }
+        } catch (Exception ex) {
+            System.err.println("Error al mostrar consultar cuenta transpaso: " + ex.getMessage());
+        }
+        return false;
+    }
+
     //HISTORIAL DE TRASPASOS
     public List<Transaccion> ConsultarHistorial(int num_cuenta) {
         String sql = "select id_transaccion, num_cuenta, cuenta_destino, tipo, monto, fecha, descripcion from transaccion where num_cuenta = ?";
