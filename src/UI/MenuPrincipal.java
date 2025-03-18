@@ -1,10 +1,8 @@
 package UI;
 
 import Model.UsuarioActivo;
-import UI.Depositos.Consultar;
-import UI.Depositos.Depositar;
-import UI.Depositos.Historial;
-import UI.Depositos.Transferir;
+import UI.Depositos.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -79,6 +77,10 @@ public class MenuPrincipal extends JFrame {
 
         btnHistorial.addActionListener(e ->{
             new Historial().setVisible(true);
+        });
+
+        btnCuenta.addActionListener(e ->{
+            new Cuenta().setVisible(true);
         });
 
         btnCerrar.addActionListener(e -> {
