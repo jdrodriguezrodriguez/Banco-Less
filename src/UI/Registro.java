@@ -2,6 +2,7 @@ package UI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 import Controller.FormValidatorController;
 import DAO.CuentaDao;
@@ -106,16 +107,23 @@ public class Registro extends JFrame {
 
                     FormValidatorController controller = new FormValidatorController(new UsuariosService(new PersonaDao(), new UsuarioDao(), new CuentaDao()));
 
-                    boolean registroExitoso = controller.registrarNuevaPersona(nombre, apellido, documento, nacimiento, password);
+                boolean registroExitoso = false;
 
-                if (registroExitoso){
+                try {
+                    registroExitoso = controller.registrarNuevaPersona(nombre, apellido, documento, nacimiento, password);
 
-                    dispose();
-                    new Login().setVisible(true);
-                    JOptionPane.showMessageDialog(null, "REGISTRO COMPLETADO.");
+                    if (registroExitoso){
 
-                }else{
-                    label_alerta.setText("Error al registrar");
+                        dispose();
+                        new Login().setVisible(true);
+                        JOptionPane.showMessageDialog(null, "REGISTRO COMPLETADO.");
+
+                    }else{
+                        label_alerta.setText("Error al registrar");
+                    }
+
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
 
             }else {

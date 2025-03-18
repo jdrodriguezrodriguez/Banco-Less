@@ -7,7 +7,8 @@ import javax.swing.*;
 
 public class PersonaDao {
 
-    public boolean InsertarPersona(Persona persona){
+    //REGISTRAR PERSONA
+    public boolean InsertarPersona(Persona persona) throws SQLException{
 
         String sql = "insert into persona (nombre, apellido, documento, nacimiento) values(?,?,?,?)";
 
@@ -32,8 +33,24 @@ public class PersonaDao {
             return false;
 
         }catch (SQLException ex){
-            JOptionPane.showMessageDialog(null, "Fallo registro a la persona, llame a soporte" + ex);
-            return false;
+            throw new SQLException("Error al insertar persona", ex);
+        }
+    }
+
+    public boolean DocumentoExistente(String documento) throws SQLException{
+        String sql = "select documento from persona where documento = ?";
+
+        try(Connection cn = ConexionBD.conectar();
+        PreparedStatement pst = cn.prepareStatement(sql)){
+
+            pst.setString(1, documento);
+
+            try(ResultSet rs = pst.executeQuery()){
+                return rs.next();
+            }
+
+        }catch (SQLException ex){
+            throw new SQLException("Error al validar documento personal", ex);
         }
     }
 }

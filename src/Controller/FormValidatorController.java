@@ -3,6 +3,8 @@ package Controller;
 import Service.DepositosService;
 import Service.UsuariosService;
 
+import java.sql.SQLException;
+
 public class FormValidatorController {
 
     private UsuariosService usuariosService;
@@ -11,7 +13,7 @@ public class FormValidatorController {
         this.usuariosService = usuariosService;
     }
 
-    public boolean registrarNuevaPersona(String nombre, String apellido, String documento, String nacimiento, String password) {
+    public boolean registrarNuevaPersona(String nombre, String apellido, String documento, String nacimiento, String password) throws SQLException {
         return usuariosService.RegistrarNuevaPersona(nombre, apellido, documento, nacimiento, password);
     }
 
