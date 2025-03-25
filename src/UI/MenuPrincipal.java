@@ -2,6 +2,7 @@ package UI;
 
 import Model.UsuarioActivo;
 import UI.Depositos.*;
+import UI.Depositos.GestionCuenta.Cuenta;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,22 +1,18 @@
-package UI.Depositos;
-
-import Controller.FormValidatorController;
-import Model.UsuarioActivo;
-import Service.UsuariosService;
+package UI.Depositos.GestionCuenta;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Cuenta extends JFrame {
+public class ModificarDatos extends JFrame {
     private JPanel panel;
-    private JTextField txtNombre, txtApellido, txtUsuario, txtCorreo;
+    private JTextField txtNombre, txtNacimiento, txtUsuario, txtCorreo, txtApellido, txtDocumento;
     private JPasswordField txtPassword;
-    private JButton btnGuardar, btnCancelar;
+    private JButton btnModificar, btnCancelar;
 
-    public Cuenta() {
-        setTitle("Modificar Cuenta");
+    public ModificarDatos() {
+        setTitle("Modificando datos personales");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(400, 400);
+        setSize(400, 490);
         setLocationRelativeTo(null);
         setResizable(false);
 
@@ -24,7 +20,7 @@ public class Cuenta extends JFrame {
         panel.setBackground(new Color(30, 40, 50));
         panel.setLayout(null);
 
-        JLabel lblTitulo = new JLabel("Modificar Datos", SwingConstants.CENTER);
+        JLabel lblTitulo = new JLabel("Cambiar datos", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 22));
         lblTitulo.setForeground(new Color(255, 215, 0));
         lblTitulo.setBounds(50, 20, 300, 30);
@@ -50,60 +46,64 @@ public class Cuenta extends JFrame {
         txtApellido.setBounds(150, 110, 200, 25);
         panel.add(txtApellido);
 
+        JLabel lblDocumento = new JLabel("Documento:");
+        lblDocumento.setForeground(Color.WHITE);
+        lblDocumento.setBounds(50, 150, 100, 25);
+        lblDocumento.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        panel.add(lblDocumento);
+
+        txtDocumento = new JTextField();
+        txtDocumento.setBounds(150, 150, 200, 25);
+        panel.add(txtDocumento);
+
         JLabel lblCorreo = new JLabel("Correo:");
         lblCorreo.setForeground(Color.WHITE);
-        lblCorreo.setBounds(50, 150, 100, 25);
+        lblCorreo.setBounds(50, 190, 100, 25);
         lblCorreo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panel.add(lblCorreo);
 
         txtCorreo = new JTextField();
-        txtCorreo.setBounds(150, 150, 200, 25);
+        txtCorreo.setBounds(150, 190, 200, 25);
         panel.add(txtCorreo);
+
+        JLabel lblNacimiento = new JLabel("Nacimiento:");
+        lblNacimiento.setForeground(Color.WHITE);
+        lblNacimiento.setBounds(50, 230, 100, 25);
+        lblNacimiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        panel.add(lblNacimiento);
+
+        txtNacimiento = new JTextField();
+        txtNacimiento.setBounds(150, 230, 200, 25);
+        panel.add(txtNacimiento);
 
         JLabel lblUsuario = new JLabel("Usuario:");
         lblUsuario.setForeground(Color.WHITE);
-        lblUsuario.setBounds(50, 190, 100, 25);
+        lblUsuario.setBounds(50, 270, 100, 25);
         lblUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panel.add(lblUsuario);
 
         txtUsuario = new JTextField();
-        txtUsuario.setBounds(150, 190, 200, 25);
+        txtUsuario.setBounds(150, 270, 200, 25);
+        txtUsuario.setHorizontalAlignment(JTextField.CENTER);
         panel.add(txtUsuario);
 
-        JLabel lblPassword = new JLabel("Contraseña:");
-        lblPassword.setForeground(Color.WHITE);
-        lblPassword.setBounds(50, 240, 100, 25);
-        lblPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        panel.add(lblPassword);
-
-        txtPassword = new JPasswordField();
-        txtPassword.setBounds(150, 240, 200, 25);
-        panel.add(txtPassword);
-
-        btnGuardar = new JButton("Guardar");
-        btnGuardar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnGuardar.setBounds(80, 290, 100, 30);
-        panel.add(btnGuardar);
+        btnModificar = new JButton("Modificar datos");
+        btnModificar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnModificar.setBounds(80, 340, 100, 30);
+        panel.add(btnModificar);
 
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnCancelar.setBounds(220, 290, 100, 30);
+        btnCancelar.setBounds(220, 340, 100, 30);
         panel.add(btnCancelar);
 
         add(panel);
 
-        UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
-        txtUsuario.setText(usuarioActivo.getUsername());
-        txtUsuario.setEditable(false);
-
-        btnGuardar.addActionListener(e -> {
-            String newNombre = txtNombre.getText();
-            String newApellido = txtApellido.getText();
-            String newPassword = new String(txtPassword.getPassword()).trim();
-            String newCorreo = txtCorreo.getText();
-
-
-
+        btnModificar.addActionListener(e -> {
+            String newNombre = txtNombre.getText().trim();
+            String newApellido = txtApellido.getText().trim();
+            String newCorreo = txtCorreo.getText().trim().toLowerCase();
+            String nacimiento = txtNacimiento.getText().trim();
         });
 
         btnCancelar.addActionListener(e -> {
