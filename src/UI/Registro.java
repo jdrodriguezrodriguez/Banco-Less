@@ -15,11 +15,11 @@ public class Registro extends JFrame {
     private JPanel panelRegistro;
     private JTextField txtNombre, txtApellido, txtDocumento, txtNacimiento, txtCorreo;
     private JPasswordField txtPassword;
-    private JButton btnRegistrar;
+    private JButton btnRegistrar, btnCancelar;
 
     public Registro() {
         setTitle("Banco Less - Registro");
-        setSize(400, 600);
+        setSize(400, 650);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -95,14 +95,20 @@ public class Registro extends JFrame {
         btnRegistrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panelRegistro.add(btnRegistrar);
 
+        btnCancelar = new JButton("Cancelar");
+        btnCancelar.setBounds(50, 500, 300, 40);
+        btnCancelar.setBackground(new Color(223, 45, 45));
+        btnCancelar.setForeground(Color.BLACK);
+        btnCancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        panelRegistro.add(btnCancelar);
+
         JLabel label_alerta = new JLabel("");
         label_alerta.setFont(new Font("Arial", Font.BOLD, 16));
-        label_alerta.setBounds(130,490,250,40);
+        label_alerta.setBounds(130,550,250,40);
         label_alerta.setForeground(new Color(200, 10, 5));
         panelRegistro.add(label_alerta);
 
         setContentPane(panelRegistro);
-
 
         //BOTON REGISTRAR
         btnRegistrar.addActionListener(e ->{
@@ -115,8 +121,7 @@ public class Registro extends JFrame {
 
             if (UsuariosService.ValidarCamposRegistro(nombre,apellido,documento,nacimiento, correo, password)) {
 
-                    FormValidatorController controller = new FormValidatorController(new UsuariosService(new PersonaDao(), new UsuarioDao(), new CuentaDao()));
-
+                FormValidatorController controller = new FormValidatorController(new UsuariosService(new PersonaDao(), new UsuarioDao(), new CuentaDao()));
                 boolean registroExitoso = false;
 
                 try {
@@ -131,11 +136,9 @@ public class Registro extends JFrame {
                     }else{
                         label_alerta.setText("Error al registrar");
                     }
-
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
-
             }else {
                 label_alerta.setText("Verifique los campos");
                 txtNombre.setBackground(Color.RED);
@@ -144,9 +147,11 @@ public class Registro extends JFrame {
                 txtPassword.setBackground(Color.RED);
                 txtNacimiento.setBackground(Color.RED);
             }
+        });
 
-
-
+        btnCancelar.addActionListener(e ->{
+            dispose();
+            new Login().setVisible(true);
         });
     }
 }
