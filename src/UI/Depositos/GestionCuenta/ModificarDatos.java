@@ -1,5 +1,12 @@
 package UI.Depositos.GestionCuenta;
 
+import Controller.FormValidatorController;
+import DAO.CuentaDao;
+import DAO.PersonaDao;
+import DAO.UsuarioDao;
+import Model.UsuarioActivo;
+import Service.UsuariosService;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -65,6 +72,7 @@ public class ModificarDatos extends JFrame {
         txtCorreo.setBounds(150, 190, 200, 25);
         txtCorreo.setEditable(false);
         txtCorreo.setBackground(Color.RED);
+        txtCorreo.setEditable(false);
         panel.add(txtCorreo);
 
         JLabel lblNacimiento = new JLabel("Nacimiento:");
@@ -104,11 +112,31 @@ public class ModificarDatos extends JFrame {
 
         add(panel);
 
+        UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
+        FormValidatorController controller = new FormValidatorController(new UsuariosService(new PersonaDao(), new UsuarioDao(), new CuentaDao()));
+        String[] Consulta = controller.ConsultarDatos();
+
+
+        txtDocumento.setText(Consulta[2]);
+        txtDocumento.setEditable(false);
+        txtUsuario.setText(usuarioActivo.getUsername());
+        txtUsuario.setEditable(false);
+
+
         btnModificar.addActionListener(e -> {
             String newNombre = txtNombre.getText().trim();
             String newApellido = txtApellido.getText().trim();
-            String newCorreo = txtCorreo.getText().trim().toLowerCase();
-            String nacimiento = txtNacimiento.getText().trim();
+            //String newCorreo = txtCorreo.getText().trim().toLowerCase();
+            String newNacimiento = txtNacimiento.getText().trim();
+
+            boolean ModificarDatos = controller.ActualizarDatos(newNombre, newApellido, newNacimiento);
+
+            if (ModificarDatos){
+                dispose();
+                JOptionPane.showMessageDialog(null, "Datos modificados");
+            }else{
+                System.out.println("Error al validar datos en UI/ModificarDatos");
+            }
         });
 
         btnCancelar.addActionListener(e -> {

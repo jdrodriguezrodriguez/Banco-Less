@@ -102,7 +102,7 @@ public class Cuenta extends JFrame {
         btnModificarDatos = new JButton("Modificar datos");
         btnModificarDatos.setFont(new Font("Arial", Font.BOLD, 14));
         btnModificarDatos.setBounds(115, 320, 180, 28);
-        btnModificarPass.setBackground(new Color(13, 14, 138));
+        btnModificarDatos.setBackground(new Color(13, 14, 138));
         btnModificarDatos.setForeground(Color.WHITE);
         panel.add(btnModificarDatos);
 
@@ -137,7 +137,7 @@ public class Cuenta extends JFrame {
         txtUsuario.setText(usuarioActivo.getUsername());
         txtUsuario.setEditable(false);
         //txtCorreo.setText(Consulta[0]);
-        //txtCorreo.setEditable(false);
+        txtCorreo.setEditable(false);
 
         btnModificarDatos.addActionListener(e -> {
             new ModificarDatos().setVisible(true);

@@ -25,6 +25,10 @@ public class FormValidatorController {
         return usuariosService.ConsultarDatos();
     }
 
+    public boolean ActualizarDatos(String nombre, String apellido, String nacimiento){
+        return usuariosService.ActualizarDatos(nombre, apellido, nacimiento);
+    }
+
     public boolean ActualizarContraseña(String pass){
         return usuariosService.ActualizarContraseña(pass);
     }

@@ -106,4 +106,33 @@ public class PersonaDao {
         }
         return false;
     }
+
+    //CAMBIAR DATOS DEL USUARIO
+    public boolean ActualizarDatosPersonales(int idUsuario, String nombre, String apellido, String nacimiento){
+        String sqlBuscarID = "select id_persona from usuario where  id_usuario = ?";
+        String sqlActualizarDatos = "update persona set nombre = ?, apellido = ?, nacimiento = ? where id_persona = ?";
+        try (Connection cn = ConexionBD.conectar();
+        PreparedStatement pstBuscar = cn.prepareStatement(sqlBuscarID)){
+
+            pstBuscar.setInt(1, idUsuario);
+
+            try (ResultSet rs = pstBuscar.executeQuery()){
+                if (rs.next()){
+                    int idPersona = rs.getInt("id_persona");
+
+                    try (PreparedStatement pstActualizar = cn.prepareStatement(sqlActualizarDatos)){
+                        pstActualizar.setString(1,nombre );
+                        pstActualizar.setString(2, apellido);
+                        pstActualizar.setString(3, nacimiento);
+                        pstActualizar.setInt(4, idPersona );
+
+                        return pstActualizar.executeUpdate() > 0;
+                    }
+                }
+            }
+        }catch (SQLException ex){
+            System.err.println("Error al actualizar los datos del usuario: " + ex.getMessage());
+        }
+        return false;
+    }
 }

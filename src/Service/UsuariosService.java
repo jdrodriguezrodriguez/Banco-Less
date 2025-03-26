@@ -29,6 +29,12 @@ public class UsuariosService {
         return personaDao.ActualizarContraseña(usuarioActivo.getIdUsuario(), pass);
     }
 
+    //ACTUALIZAR DATOS DEL USUARIO
+    public boolean ActualizarDatos(String nombre, String apellido, String nacimiento){
+        UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
+        return personaDao.ActualizarDatosPersonales(usuarioActivo.getIdUsuario(), nombre, apellido, nacimiento);
+    }
+
     //CONSULTAR DATOS DEL USUARIO
     public String [] ConsultarDatos(){
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
