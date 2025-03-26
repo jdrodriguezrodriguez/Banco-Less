@@ -6,7 +6,6 @@ import java.awt.*;
 public class ModificarDatos extends JFrame {
     private JPanel panel;
     private JTextField txtNombre, txtNacimiento, txtUsuario, txtCorreo, txtApellido, txtDocumento;
-    private JPasswordField txtPassword;
     private JButton btnModificar, btnCancelar;
 
     public ModificarDatos() {
@@ -89,13 +88,17 @@ public class ModificarDatos extends JFrame {
         txtUsuario.setHorizontalAlignment(JTextField.CENTER);
         panel.add(txtUsuario);
 
-        btnModificar = new JButton("Modificar datos");
+        btnModificar = new JButton("Modificar");
         btnModificar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnModificar.setBackground(new Color(46, 204, 113));
+        btnModificar.setForeground(Color.WHITE);
         btnModificar.setBounds(80, 340, 100, 30);
         panel.add(btnModificar);
 
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnCancelar.setBackground(new Color(231, 76, 60));
+        btnCancelar.setForeground(Color.WHITE);
         btnCancelar.setBounds(220, 340, 100, 30);
         panel.add(btnCancelar);
 

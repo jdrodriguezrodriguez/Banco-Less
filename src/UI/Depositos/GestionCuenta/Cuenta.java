@@ -102,15 +102,21 @@ public class Cuenta extends JFrame {
         btnModificarDatos = new JButton("Modificar datos");
         btnModificarDatos.setFont(new Font("Arial", Font.BOLD, 14));
         btnModificarDatos.setBounds(115, 320, 180, 28);
+        btnModificarPass.setBackground(new Color(13, 14, 138));
+        btnModificarDatos.setForeground(Color.WHITE);
         panel.add(btnModificarDatos);
 
         btnModificarPass = new JButton("Cambiar contraseña");
         btnModificarPass.setFont(new Font("Arial", Font.BOLD, 14));
+        btnModificarPass.setBackground(new Color(13, 14, 138));
+        btnModificarPass.setForeground(Color.WHITE);
         btnModificarPass.setBounds(115, 350, 180, 28);
         panel.add(btnModificarPass);
 
         btnCancelar = new JButton("Salir");
         btnCancelar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnCancelar.setBackground(new Color(231, 76, 60));
+        btnCancelar.setForeground(Color.WHITE);
         btnCancelar.setBounds(150, 380, 100, 28);
         panel.add(btnCancelar);
 
