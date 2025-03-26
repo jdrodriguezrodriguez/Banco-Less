@@ -18,8 +18,18 @@ public class UsuariosService {
         this.cuentaDao = cuentaDao;
     }
 
-    //CONSULTAR DATOS DEL USUARIO
+    //ACTUALIZAR CONTRASEÑA
+    public boolean ActualizarContraseña(String pass){
+        UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
 
+        if (!ValidarPassword(pass)){
+            JOptionPane.showMessageDialog(null, "la Contraseña debe tener entre 4 y 8 caracteres");
+            return false;
+        }
+        return personaDao.ActualizarContraseña(usuarioActivo.getIdUsuario(), pass);
+    }
+
+    //CONSULTAR DATOS DEL USUARIO
     public String [] ConsultarDatos(){
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
         return personaDao.Datosusuario(usuarioActivo.getIdUsuario());

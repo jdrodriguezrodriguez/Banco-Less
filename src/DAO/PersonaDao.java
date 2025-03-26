@@ -37,6 +37,7 @@ public class PersonaDao {
         }
     }
 
+    //VALIDAR DOCUMENTO EXISTENTE
     public boolean DocumentoExistente(String documento) throws SQLException{
         String sql = "select documento from persona where documento = ?";
 
@@ -54,6 +55,7 @@ public class PersonaDao {
         }
     }
 
+    //CONSULTAR DATOS DEL USUARIO
     public String[] Datosusuario(int idUsuario){
         String sql = "select p.nombre, p.apellido, p.documento, p.nacimiento from persona p join usuario u on p.id_persona = u.id_persona where u.id_usuario = ?";
 
@@ -78,5 +80,30 @@ public class PersonaDao {
             System.out.println("Error al consultar datos del usuario" + e);
         }
         return datos;
+    }
+
+    //CAMBIAR CONTRASEÑA USUARIO
+    public boolean ActualizarContraseña(int idUsuario, String pass){
+        String sql = "update usuario set password = ? where id_usuario = ?";
+
+        try(Connection cn = ConexionBD.conectar();
+        PreparedStatement pst = cn.prepareStatement(sql)){
+            cn.setAutoCommit(false);
+
+            pst.setString(1, pass);
+            pst.setInt(2, idUsuario);
+
+            if (pst.executeUpdate() == 0){
+                cn.rollback();
+                return false;
+            }
+
+            cn.commit();
+            return true;
+
+        }catch (SQLException e){
+            System.err.println("Error al actualizar la contraseña: " + e.getMessage());
+        }
+        return false;
     }
 }
