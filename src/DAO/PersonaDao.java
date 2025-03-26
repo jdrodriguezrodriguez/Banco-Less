@@ -53,4 +53,30 @@ public class PersonaDao {
             throw new SQLException("Error al validar documento personal", ex);
         }
     }
+
+    public String[] Datosusuario(int idUsuario){
+        String sql = "select p.nombre, p.apellido, p.documento, p.nacimiento from persona p join usuario u on p.id_persona = u.id_persona where u.id_usuario = ?";
+
+        String [] datos = new String[4];
+
+        try (Connection cn = ConexionBD.conectar();
+        PreparedStatement pst = cn.prepareStatement(sql)){
+
+            pst.setInt(1, idUsuario);
+
+            try(ResultSet rs = pst.executeQuery()){
+                if (rs.next()){
+                    datos[0] =  rs.getString("nombre");
+                    datos[1] =  rs.getString("apellido");
+                    datos[2] = rs.getString("documento");
+                    datos[3] =  rs.getString("nacimiento");
+                    //datos[4] = rs.getString("correo");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al consultar datos del usuario" + e);
+        }
+        return datos;
+    }
 }

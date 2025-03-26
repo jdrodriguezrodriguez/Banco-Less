@@ -21,4 +21,8 @@ public class FormValidatorController {
         return usuariosService.LoginUsuario(username, password);
     }
 
+    public String[] ConsultarDatos(){
+        return usuariosService.ConsultarDatos();
+    }
+
 }

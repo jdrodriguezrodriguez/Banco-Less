@@ -41,4 +41,8 @@ CREATE TABLE transaccion(
 show databases;
 show tables;
 
+select * from usuario;
+select * from persona;
+#select p.nombre, p.apellido, p.documento, p.nacimiento from persona p join usuario u on p.id_persona = u.id_persona where u.id_usuario =  1;
+
 

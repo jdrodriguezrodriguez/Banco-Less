@@ -64,6 +64,8 @@ public class ModificarDatos extends JFrame {
 
         txtCorreo = new JTextField();
         txtCorreo.setBounds(150, 190, 200, 25);
+        txtCorreo.setEditable(false);
+        txtCorreo.setBackground(Color.RED);
         panel.add(txtCorreo);
 
         JLabel lblNacimiento = new JLabel("Nacimiento:");

@@ -18,6 +18,13 @@ public class UsuariosService {
         this.cuentaDao = cuentaDao;
     }
 
+    //CONSULTAR DATOS DEL USUARIO
+
+    public String [] ConsultarDatos(){
+        UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
+        return personaDao.Datosusuario(usuarioActivo.getIdUsuario());
+    }
+
     //AGREGAR NUEVA PERSONA
     public boolean RegistrarNuevaPersona(String nombre, String apellido, String documento, String nacimiento, String password) throws SQLException {
         try{

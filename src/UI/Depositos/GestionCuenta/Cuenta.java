@@ -1,6 +1,11 @@
 package UI.Depositos.GestionCuenta;
 
+import Controller.FormValidatorController;
+import DAO.CuentaDao;
+import DAO.PersonaDao;
+import DAO.UsuarioDao;
 import Model.UsuarioActivo;
+import Service.UsuariosService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +40,7 @@ public class Cuenta extends JFrame {
 
         txtNombre = new JTextField();
         txtNombre.setBounds(150, 70, 200, 25);
+        txtNombre.setHorizontalAlignment(JTextField.CENTER);
         panel.add(txtNombre);
 
         JLabel lblApellido = new JLabel("Apellido:");
@@ -45,6 +51,7 @@ public class Cuenta extends JFrame {
 
         txtApellido = new JTextField();
         txtApellido.setBounds(150, 110, 200, 25);
+        txtApellido.setHorizontalAlignment(JTextField.CENTER);
         panel.add(txtApellido);
 
         JLabel lblDocumento = new JLabel("Documento:");
@@ -55,17 +62,8 @@ public class Cuenta extends JFrame {
 
         txtDocumento = new JTextField();
         txtDocumento.setBounds(150, 150, 200, 25);
+        txtDocumento.setHorizontalAlignment(JTextField.CENTER);
         panel.add(txtDocumento);
-
-        JLabel lblCorreo = new JLabel("Correo:");
-        lblCorreo.setForeground(Color.WHITE);
-        lblCorreo.setBounds(50, 190, 100, 25);
-        lblCorreo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        panel.add(lblCorreo);
-
-        txtCorreo = new JTextField();
-        txtCorreo.setBounds(150, 190, 200, 25);
-        panel.add(txtCorreo);
 
         JLabel lblNacimiento = new JLabel("Nacimiento:");
         lblNacimiento.setForeground(Color.WHITE);
@@ -75,7 +73,20 @@ public class Cuenta extends JFrame {
 
         txtNacimiento = new JTextField();
         txtNacimiento.setBounds(150, 230, 200, 25);
+        txtNacimiento.setHorizontalAlignment(JTextField.CENTER);
         panel.add(txtNacimiento);
+
+        JLabel lblCorreo = new JLabel("Correo:");
+        lblCorreo.setForeground(Color.WHITE);
+        lblCorreo.setBounds(50, 190, 100, 25);
+        lblCorreo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        panel.add(lblCorreo);
+
+        txtCorreo = new JTextField();
+        txtCorreo.setBounds(150, 190, 200, 25);
+        txtCorreo.setBackground(Color.RED);
+        txtCorreo.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(txtCorreo);
 
         JLabel lblUsuario = new JLabel("Usuario:");
         lblUsuario.setForeground(Color.WHITE);
@@ -106,8 +117,21 @@ public class Cuenta extends JFrame {
         add(panel);
 
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
+        FormValidatorController controller = new FormValidatorController(new UsuariosService(new PersonaDao(), new UsuarioDao(), new CuentaDao()));
+        String[] Consulta = controller.ConsultarDatos();
+
+        txtNombre.setText(Consulta[0]);
+        txtNombre.setEditable(false);
+        txtApellido.setText(Consulta[1]);
+        txtApellido.setEditable(false);
+        txtDocumento.setText(Consulta[2]);
+        txtDocumento.setEditable(false);
+        txtNacimiento.setText(Consulta[3]);
+        txtNacimiento.setEditable(false);
         txtUsuario.setText(usuarioActivo.getUsername());
         txtUsuario.setEditable(false);
+        //txtCorreo.setText(Consulta[0]);
+        //txtCorreo.setEditable(false);
 
         btnModificarDatos.addActionListener(e -> {
             new ModificarDatos().setVisible(true);
