@@ -136,7 +136,7 @@ public class Cuenta extends JFrame {
         txtNacimiento.setEditable(false);
         txtUsuario.setText(usuarioActivo.getUsername());
         txtUsuario.setEditable(false);
-        //txtCorreo.setText(Consulta[0]);
+        txtCorreo.setText(Consulta[4]);
         txtCorreo.setEditable(false);
 
         btnModificarDatos.addActionListener(e -> {

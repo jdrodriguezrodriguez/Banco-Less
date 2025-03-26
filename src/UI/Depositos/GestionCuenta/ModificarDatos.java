@@ -70,9 +70,6 @@ public class ModificarDatos extends JFrame {
 
         txtCorreo = new JTextField();
         txtCorreo.setBounds(150, 190, 200, 25);
-        txtCorreo.setEditable(false);
-        txtCorreo.setBackground(Color.RED);
-        txtCorreo.setEditable(false);
         panel.add(txtCorreo);
 
         JLabel lblNacimiento = new JLabel("Nacimiento:");
@@ -126,10 +123,10 @@ public class ModificarDatos extends JFrame {
         btnModificar.addActionListener(e -> {
             String newNombre = txtNombre.getText().trim();
             String newApellido = txtApellido.getText().trim();
-            //String newCorreo = txtCorreo.getText().trim().toLowerCase();
+            String newCorreo = txtCorreo.getText().trim().toLowerCase();
             String newNacimiento = txtNacimiento.getText().trim();
 
-            boolean ModificarDatos = controller.ActualizarDatos(newNombre, newApellido, newNacimiento);
+            boolean ModificarDatos = controller.ActualizarDatos(newNombre, newApellido, newNacimiento, newCorreo);
 
             if (ModificarDatos){
                 dispose();

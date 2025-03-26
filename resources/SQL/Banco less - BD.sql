@@ -43,6 +43,9 @@ show tables;
 
 select * from usuario;
 select * from persona;
+alter table persona add correo varchar(20) not null;
+update persona set correo = "thiago@gmail.com" where id_persona = 29;
+alter table persona modify column correo varchar(50); 
 #select p.nombre, p.apellido, p.documento, p.nacimiento from persona p join usuario u on p.id_persona = u.id_persona where u.id_usuario =  1;
 
 

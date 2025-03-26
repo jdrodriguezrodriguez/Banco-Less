@@ -13,7 +13,7 @@ import Service.UsuariosService;
 public class Registro extends JFrame {
 
     private JPanel panelRegistro;
-    private JTextField txtNombre, txtApellido, txtDocumento, txtNacimiento;
+    private JTextField txtNombre, txtApellido, txtDocumento, txtNacimiento, txtCorreo;
     private JPasswordField txtPassword;
     private JButton btnRegistrar;
 
@@ -70,17 +70,26 @@ public class Registro extends JFrame {
         txtNacimiento.setBounds(150, 280, 200, 25);
         panelRegistro.add(txtNacimiento);
 
+        JLabel lblCorreo = new JLabel("Correo:");
+        lblCorreo.setBounds(50, 330, 100, 25);
+        lblCorreo.setForeground(Color.WHITE);
+        panelRegistro.add(lblCorreo);
+
+        txtCorreo = new JTextField();
+        txtCorreo.setBounds(150, 330, 200, 25);
+        panelRegistro.add(txtCorreo);
+
         JLabel lblPassword = new JLabel("Contraseña:");
-        lblPassword.setBounds(50, 330, 100, 25);
+        lblPassword.setBounds(50, 380, 100, 25);
         lblPassword.setForeground(Color.WHITE);
         panelRegistro.add(lblPassword);
 
         txtPassword = new JPasswordField();
-        txtPassword.setBounds(150, 330, 200, 25);
+        txtPassword.setBounds(150, 380, 200, 25);
         panelRegistro.add(txtPassword);
 
         btnRegistrar = new JButton("Registrar");
-        btnRegistrar.setBounds(50, 390, 300, 40);
+        btnRegistrar.setBounds(50, 440, 300, 40);
         btnRegistrar.setBackground(new Color(246, 190, 0));
         btnRegistrar.setForeground(Color.BLACK);
         btnRegistrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -88,7 +97,7 @@ public class Registro extends JFrame {
 
         JLabel label_alerta = new JLabel("");
         label_alerta.setFont(new Font("Arial", Font.BOLD, 16));
-        label_alerta.setBounds(130,440,250,40);
+        label_alerta.setBounds(130,490,250,40);
         label_alerta.setForeground(new Color(200, 10, 5));
         panelRegistro.add(label_alerta);
 
@@ -101,16 +110,17 @@ public class Registro extends JFrame {
             String apellido = txtApellido.getText().trim();
             String documento = txtDocumento.getText().trim();
             String nacimiento = txtNacimiento.getText().trim();
+            String correo = txtCorreo.getText().trim();
             String password = new String(txtPassword.getPassword()).trim();
 
-            if (UsuariosService.ValidarCamposRegistro(nombre,apellido,documento,nacimiento, password)) {
+            if (UsuariosService.ValidarCamposRegistro(nombre,apellido,documento,nacimiento, correo, password)) {
 
                     FormValidatorController controller = new FormValidatorController(new UsuariosService(new PersonaDao(), new UsuarioDao(), new CuentaDao()));
 
                 boolean registroExitoso = false;
 
                 try {
-                    registroExitoso = controller.registrarNuevaPersona(nombre, apellido, documento, nacimiento, password);
+                    registroExitoso = controller.registrarNuevaPersona(nombre, apellido, documento, nacimiento, correo, password);
 
                     if (registroExitoso){
 

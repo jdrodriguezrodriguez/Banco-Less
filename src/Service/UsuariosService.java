@@ -30,9 +30,9 @@ public class UsuariosService {
     }
 
     //ACTUALIZAR DATOS DEL USUARIO
-    public boolean ActualizarDatos(String nombre, String apellido, String nacimiento){
+    public boolean ActualizarDatos(String nombre, String apellido, String nacimiento, String correo){
         UsuarioActivo usuarioActivo = UsuarioActivo.getLinea();
-        return personaDao.ActualizarDatosPersonales(usuarioActivo.getIdUsuario(), nombre, apellido, nacimiento);
+        return personaDao.ActualizarDatosPersonales(usuarioActivo.getIdUsuario(), nombre, apellido, nacimiento, correo);
     }
 
     //CONSULTAR DATOS DEL USUARIO
@@ -42,7 +42,7 @@ public class UsuariosService {
     }
 
     //AGREGAR NUEVA PERSONA
-    public boolean RegistrarNuevaPersona(String nombre, String apellido, String documento, String nacimiento, String password) throws SQLException {
+    public boolean RegistrarNuevaPersona(String nombre, String apellido, String documento, String nacimiento,String correo, String password) throws SQLException {
         try{
             if (personaDao.DocumentoExistente(documento)){
                 JOptionPane.showMessageDialog(null, "Documento ya existe");
@@ -54,7 +54,7 @@ public class UsuariosService {
                 return false;
             }
 
-            Persona persona = new Persona(0, nombre, apellido, documento, nacimiento);
+            Persona persona = new Persona(0, nombre, apellido, documento, nacimiento, correo);
 
             if (!personaDao.InsertarPersona(persona)) {
                 JOptionPane.showMessageDialog(null, "Fallo registro a la persona, llame a soporte");
@@ -111,8 +111,8 @@ public class UsuariosService {
         return password.length() >= 4 && password.length() <= 8;
     }
 
-    public static boolean ValidarCamposRegistro(String nombre, String apellido, String documento, String nacimiento, String password) {
-        return !nombre.isEmpty() && !apellido.isEmpty() && !documento.isEmpty() && !nacimiento.isEmpty() && !password.isEmpty();
+    public static boolean ValidarCamposRegistro(String nombre, String apellido, String documento, String nacimiento, String correo, String password) {
+        return !nombre.isEmpty() && !apellido.isEmpty() && !documento.isEmpty() && !nacimiento.isEmpty() && !correo.isEmpty() &&!password.isEmpty();
     }
 
     public static boolean ValidarCaposLogin(String usuario, String password) {

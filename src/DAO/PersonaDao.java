@@ -10,7 +10,7 @@ public class PersonaDao {
     //REGISTRAR PERSONA
     public boolean InsertarPersona(Persona persona) throws SQLException{
 
-        String sql = "insert into persona (nombre, apellido, documento, nacimiento) values(?,?,?,?)";
+        String sql = "insert into persona (nombre, apellido, documento, nacimiento, correo) values(?,?,?,?,?)";
 
         try(Connection cn = ConexionBD.conectar();
         PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){  //OBTENER CLAVES GENERADAS
@@ -19,6 +19,7 @@ public class PersonaDao {
             pst.setString(2, persona.getApellido());
             pst.setString(3, persona.getDocumento());
             pst.setString(4, persona.getNacimiento());
+            pst.setString(5, persona.getCorreo());
 
             int filasAfectadas = pst.executeUpdate();
 
@@ -57,9 +58,9 @@ public class PersonaDao {
 
     //CONSULTAR DATOS DEL USUARIO
     public String[] Datosusuario(int idUsuario){
-        String sql = "select p.nombre, p.apellido, p.documento, p.nacimiento from persona p join usuario u on p.id_persona = u.id_persona where u.id_usuario = ?";
+        String sql = "select p.nombre, p.apellido, p.documento, p.nacimiento, p.correo from persona p join usuario u on p.id_persona = u.id_persona where u.id_usuario = ?";
 
-        String [] datos = new String[4];
+        String [] datos = new String[5];
 
         try (Connection cn = ConexionBD.conectar();
         PreparedStatement pst = cn.prepareStatement(sql)){
@@ -72,7 +73,7 @@ public class PersonaDao {
                     datos[1] =  rs.getString("apellido");
                     datos[2] = rs.getString("documento");
                     datos[3] =  rs.getString("nacimiento");
-                    //datos[4] = rs.getString("correo");
+                    datos[4] = rs.getString("correo");
                 }
             }
 
@@ -108,9 +109,9 @@ public class PersonaDao {
     }
 
     //CAMBIAR DATOS DEL USUARIO
-    public boolean ActualizarDatosPersonales(int idUsuario, String nombre, String apellido, String nacimiento){
+    public boolean ActualizarDatosPersonales(int idUsuario, String nombre, String apellido, String nacimiento, String correo){
         String sqlBuscarID = "select id_persona from usuario where  id_usuario = ?";
-        String sqlActualizarDatos = "update persona set nombre = ?, apellido = ?, nacimiento = ? where id_persona = ?";
+        String sqlActualizarDatos = "update persona set nombre = ?, apellido = ?, nacimiento = ?, correo = ? where id_persona = ?";
         try (Connection cn = ConexionBD.conectar();
         PreparedStatement pstBuscar = cn.prepareStatement(sqlBuscarID)){
 
@@ -124,7 +125,8 @@ public class PersonaDao {
                         pstActualizar.setString(1,nombre );
                         pstActualizar.setString(2, apellido);
                         pstActualizar.setString(3, nacimiento);
-                        pstActualizar.setInt(4, idPersona );
+                        pstActualizar.setString(4, correo );
+                        pstActualizar.setInt(5, idPersona );
 
                         return pstActualizar.executeUpdate() > 0;
                     }
